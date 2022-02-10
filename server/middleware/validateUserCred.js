@@ -3,6 +3,7 @@ module.exports = (req, res, next) => {
     const userId = req.body.user_id;
     const firstName = req.body.first_name;
     const lastName = req.body.last_name;
+    const password = req.body.password;
 
 
     function validateEmail(email) {
@@ -12,20 +13,17 @@ module.exports = (req, res, next) => {
 
     if (req.path === "/register") {
         //check for empty values
-        if (![email, userId, firstName, lastName].every(Boolean)) {
-            return res.json({ status: 401, message: "All fields must be completed. No empty fields allowed." });
+        if (![email, userId, firstName, lastName, password].every(Boolean)) {
+            return res.status(401).json({ status: 401, message: "All fields must be completed. No empty fields allowed.", req: req.body });
             //validate email format
         } else if (!validateEmail(email)) {
-            return res.json({ status: 401, message: "Invalid Email" });
+            return res.status(401).json({ status: 401, message: "Invalid Email" });
         }
     } else if (req.path === '/login') {
         //check for empty values
-        if (![email, userId].every(Boolean)) {
-            return res.json({ status: 401, message: "All fields must be completed. No empty fields allowed." });
-            //validate email format
-        } else if (!validateEmail(email)) {
-            return res.json({ status: 401, message: "Invalid Email" });
-        }
+        if (![password, userId].every(Boolean)) {
+            return res.status(401).json({ status: 401, message: "All fields must be completed. No empty fields allowed." });
+         }
     }
     next();
 }

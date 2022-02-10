@@ -66,7 +66,7 @@ app.get("/users/:id", async(req, res) => {
         const allUsers = await pool.query(
             `SELECT * FROM sys_user WHERE sys_id = $1`, [id]
         );
-        res.json({status: 200, message: "Users retrieved", records: allUsers.rows[0]});
+        res.status(200).json(allUsers);
         
     } catch (err) {
         res.json({ status: 500, message: err.message, request: req });
